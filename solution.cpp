@@ -3,64 +3,61 @@
 using namespace std;
 
 struct Node {
-    long long data;   
-    Node* next_node;  
-    Node(long long val): data(val), next_node(nullptr) {}
+    long long data;    
+    Node* next_node;    
+    Node(long long val) : data(val), next_node(nullptr) {}
 };
 
 struct List {
-    Node* head;     
-    Node* current_node;
+    Node* head;      
+    Node* current;       
 
     List() {
         head = new Node(100); 
-        current_node = head;
+        current = head;
     }
 
     void append(long long X) {
-        Node* new_node = new Node(X);        
-        new_node->next_node = current_node->next_node; 
-        current_node->next_node = new_node;
-        current_node = new_node;             
+        Node* new_node = new Node(X);       
+        new_node->next_node = current->next_node; 
+        current->next_node = new_node;
+        current = new_node;             
     }
 
-    void go(long long steps) {
-        while (steps > 0 && current_node->next_node != nullptr) {
-            current_node = current_node->next_node;
-            steps--;
+    void go(long long N) {
+        while (N > 0 && current->next_node != nullptr) {
+            current = current->next_node;
+            N--;
         }
     }
 
     void print() {
-        cout << current_node->data;
+        cout << current->data; 
     }
 
     void reset() {
-        current_node = head; 
+        current = head;
     }
 };
 
 int main() {
     List list; 
-    long long last_value = 100;
-    long long current_value = 100; 
     string cmd;
 
     while (cin >> cmd) {
         if (cmd == "append") {
             long long X; cin >> X;
             list.append(X);
-            last_value = current_value = X;
             cout << "append " << X << " - OK" << '\n';
         } else if (cmd == "go") {
-            long long N; cin >> N; long long originalN = N;
-            current_value = last_value; 
+            long long N; cin >> N;
             list.go(N);
-            cout << "go " << originalN << " - OK" << '\n';
+            cout << "go " << N << " - OK" << '\n';
         } else if (cmd == "print") {
-            cout << "print " << list.print() << " - OK" << '\n';
+            cout << "print ";
+            list.print();
+            cout << " - OK" << '\n';
         } else if (cmd == "reset") {
-            current_value = 100; 
             list.reset();
             cout << "reset - OK" << '\n';
         }

@@ -10,19 +10,18 @@ struct Node {
 };
 
 struct List {
-    Node* first;
-    Node* current;
-
+    Node* first;  
+    Node* current;  
     List() {
-        first = new Node(100); 
+        first = new Node(100);
         current = first;
     }
 
     void append(long long X) {
-        Node* newElement = new Node(X);
-        newElement->next = current->next;
-        current->next = newElement;
-        current = newElement;
+        Node* newNode = new Node(X);
+        newNode->next = current->next;
+        current->next = newNode;
+        current = newNode;
     }
 
     void go(long long N) {
@@ -32,8 +31,8 @@ struct List {
         }
     }
 
-    void print() {
-        cout << current->value;
+    long long get() {
+        return current->value;
     }
 
     void reset() {
@@ -43,32 +42,22 @@ struct List {
 
 int main() {
     List list;
-    long long last_value = 100;
-    long long current_value = 100;
-    string cmd;
-
+    std::string cmd;
     while (cin >> cmd) {
         if (cmd == "append") {
             long long X; cin >> X;
             list.append(X);
-            last_value = current_value = X;
             cout << "append " << X << " - OK" << '\n';
         } else if (cmd == "go") {
-            long long N; cin >> N; long long originalN = N;
-            current_value = last_value;
+            long long N; cin >> N;
             list.go(N);
-            cout << "go " << originalN << " - OK" << '\n';
+            cout << "go " << N << " - OK" << '\n';
         } else if (cmd == "print") {
-            cout << "print " << list.current->value << " - OK" << '\n';
-            cout << "print ";
-            list.print();
-            cout << " - OK" << '\n';
+            cout << "print " << list.get() << " - OK" << '\n';
         } else if (cmd == "reset") {
-            current_value = 100;
             list.reset();
             cout << "reset - OK" << '\n';
         }
     }
-
     return 0;
 }

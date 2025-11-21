@@ -2,73 +2,54 @@
 #include <string>
 using namespace std;
 
-struct Node {
-    long long value; 
-    Node* next;     
-
-    Node(long long val): value(val), next(nullptr) {}
-};
-
 struct List {
-    Node* first;     
-    Node* current;       
+    long long value;      
+    List* next_node;   
+    List* current_node;     
 
-    List() {
-        first = new Node(100);
-        current = first;     
+    List(long long v) : value(v), next_node(nullptr), current_node(this) {}
+
+    void append(long long new_value) {
+        List* new_node = new List(new_value);
+        new_node->next_node = current_node->next_node;
+        current_node->next_node = new_node;
+        current_node = new_node;
     }
 
-    void append(long long X) {
-        Node* new_node = new Node(X);
-        new_node->next = current->next;
-        current->next = new_node;
-        current = new_node; 
-    }
-
-    void go(long long N) {
-        while (N > 0 && current->next != nullptr) {
-            current = current->next;
-            N--;
+    void go(long long steps) {
+        while (steps > 0 && current_node->next_node != nullptr) {
+            current_node = current_node->next_node;
+            steps--;
         }
     }
 
-    void print() {
-        cout << current->value;
+    long long get_value() {
+        return current_node->value;
     }
 
     void reset() {
-        current = first;
+        current_node = this;
     }
 };
 
 int main() {
-    List list;
-
-    long long last_value = 100; 
-    long long current_value = 100; 
-    string cmd;
-
-    while (cin >> cmd) {
-        if (cmd == "append") {
+    List lst(100);
+    string command;
+    while (cin >> command) {
+        if (command == "append") {
             long long X; cin >> X;
-            list.append(X);
-            last_value = current_value = X; 
-            cout << "append " << X << " - OK" << '\n';
-        } else if (cmd == "go") {
+            lst.append(X);
+            cout << "append " << X << " - OK\n";
+        } else if (command == "go") {
             long long N; cin >> N;
-            current_value = last_value; 
-            list.go(N);
-            cout << "go " << N << " - OK" << '\n';
-        } else if (cmd == "print") {
-            cout << "print ";
-            list.print();
-            cout << " - OK" << '\n';
-        } else if (cmd == "reset") {
-            list.reset();
-            current_value = 100; 
-            cout << "reset - OK" << '\n';
+            lst.go(N);
+            cout << "go " << N << " - OK\n";
+        } else if (command == "print") {
+            cout << "print " << lst.get_value() << " - OK\n";
+        } else if (command == "reset") {
+            lst.reset();
+            cout << "reset - OK\n";
         }
     }
-
     return 0;
 }
